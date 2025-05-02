@@ -42,6 +42,12 @@ o.foldenable = true -- Enable folding by default
 o.foldlevel = 99 -- Open all folds by default
 o.foldexpr = 'nvim_treesitter#foldexpr()'
 
+-- tabs
+o.tabstop = 2
+o.shiftwidth = 2
+o.expandtab = true
+o.smartindent = true
+
 -- See :h fo-table
 o.formatoptions = 'jcroqln'
 vim.bo.textwidth = 80
