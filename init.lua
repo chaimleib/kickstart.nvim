@@ -4,33 +4,35 @@ local o = vim.o
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
 
-vim.keymap.set({ 'i', 'n', 'v' }, '<leader><leader>', '<Esc>')
+vim.keymap.set({ 'i', 'n', 'v' }, '<leader><leader>', '<Esc>', {
+  desc = 'Escape',
+})
 
-vim.keymap.set('n', '<tab>', '<cmd>b#<cr>', { desc = 'Switch to last buffer' })
-vim.keymap.set(
-  'n',
-  '<s-tab>',
-  '<cmd>b#<cr><cmd>bd #<cr>',
-  { desc = 'Switch to last buffer and close current' }
-)
+-- Buffer navigation
+vim.keymap.set('n', '<tab>', '<cmd>b#<cr>', {
+  desc = 'Switch to last buffer',
+})
+vim.keymap.set('n', '<s-tab>', '<cmd>b#<cr><cmd>bd #<cr>', {
+  desc = 'Switch to last buffer and close current',
+})
 
 -- Don't remove leading space in a line.
-vim.keymap.set('i', '<CR>', '<CR>x<BS>')
-vim.keymap.set('n', 'o', 'ox<BS>')
-vim.keymap.set('n', 'O', 'Ox<BS>')
+vim.keymap.set('i', '<CR>', '<CR>x<BS>', { silent = true })
+vim.keymap.set('n', 'o', 'ox<BS>', { silent = true })
+vim.keymap.set('n', 'O', 'Ox<BS>', { silent = true })
 
 -- Copy the current file path to the clipboard
 vim.keymap.set(
   'n',
   '<leader>h',
   "<cmd>let @*=expand('%')<CR><cmd>echo 'Copied: '@*<CR>",
-  { silent = true, desc = 'Copy file path' }
+  { silent = true, desc = 'Copy relative file pat[H]' }
 )
 vim.keymap.set(
   'n',
   '<leader>H',
   "<cmd>let @*=expand('%:p')<CR><cmd>echo 'Copied: '@*<CR>",
-  { silent = true, desc = 'Copy full file path' }
+  { silent = true, desc = 'Copy absolute file pat[H]' }
 )
 
 -- Delete last word with option-backspace.
@@ -123,15 +125,14 @@ vim.opt.scrolloff = 2
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', {
+  desc = 'Clear search highlights',
+})
 
 -- Diagnostic keymaps
-vim.keymap.set(
-  'n',
-  '<leader>q',
-  vim.diagnostic.setloclist,
-  { desc = 'Open diagnostic [Q]uickfix list' }
-)
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, {
+  desc = 'Open diagnostic [Q]uickfix list',
+})
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -139,65 +140,38 @@ vim.keymap.set(
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set(
-  't',
-  '<Esc><Esc>',
-  '<C-\\><C-n>',
-  { desc = 'Exit terminal mode' }
-)
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', {
+  desc = 'Exit terminal mode',
+})
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set(
-  'n',
-  '<C-h>',
-  '<C-w>h',
-  { desc = 'Move focus to the left window' }
-)
-vim.keymap.set(
-  'n',
-  '<C-l>',
-  '<C-w>l',
-  { desc = 'Move focus to the right window' }
-)
-vim.keymap.set(
-  'n',
-  '<C-j>',
-  '<C-w>j',
-  { desc = 'Move focus to the lower window' }
-)
-vim.keymap.set(
-  'n',
-  '<C-k>',
-  '<C-w>k',
-  { desc = 'Move focus to the upper window' }
-)
-vim.keymap.set(
-  'i',
-  '<C-h>',
-  '<C-\\><C-n><C-w>h',
-  { desc = 'Move focus to the left window' }
-)
-vim.keymap.set(
-  'i',
-  '<C-l>',
-  '<C-\\><C-n><C-w>l',
-  { desc = 'Move focus to the right window' }
-)
-vim.keymap.set(
-  'i',
-  '<C-j>',
-  '<C-\\><C-n><C-w>j',
-  { desc = 'Move focus to the lower window' }
-)
-vim.keymap.set(
-  'i',
-  '<C-k>',
-  '<C-\\><C-n><C-w>k',
-  { desc = 'Move focus to the upper window' }
-)
+vim.keymap.set('n', '<C-h>', '<C-w>h', {
+  desc = 'Move focus to the left window',
+})
+vim.keymap.set('n', '<C-l>', '<C-w>l', {
+  desc = 'Move focus to the right window',
+})
+vim.keymap.set('n', '<C-j>', '<C-w>j', {
+  desc = 'Move focus to the lower window',
+})
+vim.keymap.set('n', '<C-k>', '<C-w>k', {
+  desc = 'Move focus to the upper window',
+})
+vim.keymap.set('i', '<C-h>', '<C-\\><C-n><C-w>h', {
+  desc = 'Move focus to the left window',
+})
+vim.keymap.set('i', '<C-l>', '<C-\\><C-n><C-w>l', {
+  desc = 'Move focus to the right window',
+})
+vim.keymap.set('i', '<C-j>', '<C-\\><C-n><C-w>j', {
+  desc = 'Move focus to the lower window',
+})
+vim.keymap.set('i', '<C-k>', '<C-\\><C-n><C-w>k', {
+  desc = 'Move focus to the upper window',
+})
 -- Resize splits.
 vim.keymap.set('n', '+', '<C-w>+', { desc = 'Increase window height' })
 vim.keymap.set('n', '_', '<C-w>-', { desc = 'Decrease window height' })
@@ -258,8 +232,12 @@ require('lazy').setup({
   {
     'AndrewRadev/sideways.vim',
     config = function()
-      vim.keymap.set('n', '<M-,>', '<cmd>SidewaysLeft<cr>')
-      vim.keymap.set('n', '<M-.>', '<cmd>SidewaysRight<cr>')
+      vim.keymap.set('n', '<M-,>', '<cmd>SidewaysLeft<cr>', {
+        desc = 'Move list item left',
+      })
+      vim.keymap.set('n', '<M-.>', '<cmd>SidewaysRight<cr>', {
+        desc = 'Move list item right',
+      })
     end,
   },
   'AndrewRadev/tagalong.vim',
@@ -292,18 +270,17 @@ require('lazy').setup({
   {
     'easymotion/vim-easymotion',
     config = function()
-      vim.keymap.set(
-        { 'n', 'v' },
-        '<leader>f',
-        '<Plug>(easymotion-bd-f)',
-        { desc = 'Easymotion [f]ind' }
-      )
+      vim.keymap.set({ 'n', 'v' }, '<leader>f', '<Plug>(easymotion-bd-f)', {
+        desc = 'Easymotion [f]ind',
+      })
     end,
   },
   {
     'FooSoft/vim-argwrap',
     config = function()
-      vim.keymap.set('n', '<leader>a', '<cmd>ArgWrap<cr>')
+      vim.keymap.set('n', '<leader>a', '<cmd>ArgWrap<cr>', {
+        desc = 'Wrap/Unwrap [a]rguments',
+      })
     end,
   },
   {
@@ -314,70 +291,50 @@ require('lazy').setup({
       'leoluz/nvim-dap-go',
     },
     config = function()
-      require('dapui').setup()
-      require('dap-go').setup()
-      vim.keymap.set(
-        'n',
-        '<M-b>',
-        '<cmd>lua require("dapui").toggle()<CR>',
-        { desc = 'Toggle De[B]ugger' }
-      )
-      vim.keymap.set(
-        'n',
-        '<M-B>',
-        '<cmd>lua require("dap").toggle_breakpoint()<CR>',
-        { desc = 'Toggle [d]ebugging breakpoint' }
-      )
-      vim.keymap.set(
-        'n',
-        '<M-t>',
-        '<cmd>lua require("dap-go").debug_test()<CR>',
-        { desc = 'Debug [T]est' }
-      )
-      vim.keymap.set(
-        'n',
-        '<M-D>',
-        '<cmd>lua require("dap").debug()<CR>',
-        { desc = '[D]ebug' }
-      )
-      vim.keymap.set(
-        'n',
-        '<M-c>',
-        '<cmd>lua require("dap").continue()<CR>',
-        { desc = '[C]ontinue' }
-      )
-      vim.keymap.set(
-        'n',
-        '<M-d>',
-        '<cmd>lua require("dap").step_over()<CR>',
-        { desc = '[D]own' }
-      )
-      vim.keymap.set(
-        'n',
-        '<M-i>',
-        '<cmd>lua require("dap").step_into()<CR>',
-        { desc = '[I]nto' }
-      )
-      vim.keymap.set(
-        'n',
-        '<M-o>',
-        '<cmd>lua require("dap").step_out()<CR>',
-        { desc = '[O]ut' }
-      )
-      vim.keymap.set(
-        'n',
-        '<M-r>',
-        '<cmd>lua require("dap").repl.toggle()<CR>',
-        { desc = '[R]epl' }
-      )
+      local dapui = require 'dapui'
+      dapui.setup()
+
+      local dapgo = require 'dap-go'
+      dapgo.setup()
+
+      local dap = require 'dap'
+      local daprepl = require 'dap.repl'
+
+      vim.keymap.set('n', '<M-b>', dapui.toggle, {
+        desc = 'DBG: Toggle De[B]ugger',
+      })
+      vim.keymap.set('n', '<M-B>', dap.toggle_breakpoint, {
+        desc = 'DBG: Toggle debugging [B]reakpoint',
+      })
+      vim.keymap.set('n', '<M-t>', dapgo.debug_test, {
+        desc = 'DBG: Debug [T]est',
+      })
+      vim.keymap.set('n', '<M-c>', dap.continue, {
+        desc = 'DBG: [C]ontinue or start debugging',
+      })
+      vim.keymap.set('n', '<M-d>', dap.step_over, {
+        desc = 'DBG: [D]own',
+      })
+      vim.keymap.set('n', '<M-i>', dap.step_into, {
+        desc = 'DBG: [I]nto',
+      })
+      vim.keymap.set('n', '<M-o>', dap.step_out, {
+        desc = 'DBG: [O]ut',
+      })
+      vim.keymap.set('n', '<M-r>', daprepl.toggle, {
+        desc = 'DBG: [R]epl',
+      })
 
       vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = '#993939' })
       vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = '#98c379' })
-      vim.fn.sign_define(
-        'DapBreakpoint',
-        { text = '', texthl = 'DapBreakpoint' }
-      )
-      vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped' })
+      vim.fn.sign_define('DapBreakpoint', {
+        text = '',
+        texthl = 'DapBreakpoint',
+      })
+      vim.fn.sign_define('DapStopped', {
+        text = '',
+        texthl = 'DapStopped',
+      })
     end,
   },
   'tpope/vim-eunuch',
@@ -453,7 +410,9 @@ require('lazy').setup({
           else
             gitsigns.nav_hunk 'next'
           end
-        end)
+        end, {
+          desc = 'Next [C]hange',
+        })
 
         map('n', '[c', function()
           if vim.wo.diff then
@@ -461,33 +420,61 @@ require('lazy').setup({
           else
             gitsigns.nav_hunk 'prev'
           end
-        end)
+        end, {
+          desc = 'Previous [C]hange',
+        })
 
         -- Actions
-        map('n', '<leader>hs', gitsigns.stage_hunk)
-        map('n', '<leader>hr', gitsigns.reset_hunk)
+        map('n', '<leader>hs', gitsigns.stage_hunk, {
+          desc = '[H]unk [S]tage',
+        })
+        map('n', '<leader>hr', gitsigns.reset_hunk, {
+          desc = '[H]unk [R]eset',
+        })
         map('v', '<leader>hs', function()
           gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end)
+        end, {
+          desc = '[H]unk [S]tage',
+        })
         map('v', '<leader>hr', function()
           gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end)
-        map('n', '<leader>hS', gitsigns.stage_buffer)
-        map('n', '<leader>hu', gitsigns.stage_hunk) -- stage_hunk also unstages
-        map('n', '<leader>hR', gitsigns.reset_buffer)
-        map('n', '<leader>hp', gitsigns.preview_hunk)
+        end, {
+          desc = '[H]unk [R]eset',
+        })
+        map('n', '<leader>hS', gitsigns.stage_buffer, {
+          desc = 'All [H]unks [S]tage',
+        })
+        map('n', '<leader>hu', gitsigns.stage_hunk, {
+          desc = '[H]unk [U]nstage',
+        }) -- stage_hunk also unstages
+        map('n', '<leader>hR', gitsigns.reset_buffer, {
+          desc = 'All [H]unks [R]eset',
+        })
+        map('n', '<leader>hp', gitsigns.preview_hunk, {
+          desc = '[H]unk [P]review',
+        })
         map('n', '<leader>hb', function()
           gitsigns.blame_line { full = true }
-        end)
-        map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-        map('n', '<leader>hd', gitsigns.diffthis)
+        end, { desc = '[H]unk [B]lame' })
+        map('n', '<leader>tb', gitsigns.toggle_current_line_blame, {
+          desc = '[T]oggle [B]lame',
+        })
+        map('n', '<leader>hd', gitsigns.diffthis, {
+          desc = '[H]unk [D]iff',
+        })
         map('n', '<leader>hD', function()
           gitsigns.diffthis '~'
-        end)
-        map('n', '<leader>td', gitsigns.preview_hunk_inline)
+        end, {
+          desc = 'All [H]unks [D]iff',
+        })
+        map('n', '<leader>td', gitsigns.preview_hunk_inline, {
+          desc = '[T]oggle [D]iff',
+        })
 
         -- Text object
-        map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+        map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', {
+          desc = '[I]nner [H]unk',
+        })
       end,
     },
   },
@@ -631,66 +618,36 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
-      vim.keymap.set(
-        'n',
-        '<leader>sh',
-        builtin.help_tags,
-        { desc = '[S]earch [H]elp' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>sk',
-        builtin.keymaps,
-        { desc = '[S]earch [K]eymaps' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>e',
-        builtin.find_files,
-        { desc = 'S[e]arch files' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>ss',
-        builtin.builtin,
-        { desc = '[S]earch [S]elect Telescope' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>sw',
-        builtin.grep_string,
-        { desc = '[S]earch current [W]ord' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>r',
-        builtin.live_grep,
-        { desc = 'Search by [R]ipgrep' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>sd',
-        builtin.diagnostics,
-        { desc = '[S]earch [D]iagnostics' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>sr',
-        builtin.resume,
-        { desc = '[S]earch [R]esume' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>s.',
-        builtin.oldfiles,
-        { desc = '[S]earch Recent Files ("." for repeat)' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>b',
-        builtin.buffers,
-        { desc = 'Find existing [B]uffers' }
-      )
+      vim.keymap.set('n', '<leader>sh', builtin.help_tags, {
+        desc = '[S]earch [H]elp',
+      })
+      vim.keymap.set('n', '<leader>sk', builtin.keymaps, {
+        desc = '[S]earch [K]eymaps',
+      })
+      vim.keymap.set('n', '<leader>e', builtin.find_files, {
+        desc = 'S[e]arch files',
+      })
+      vim.keymap.set('n', '<leader>ss', builtin.builtin, {
+        desc = '[S]earch [S]elect Telescope',
+      })
+      vim.keymap.set('n', '<leader>sw', builtin.grep_string, {
+        desc = '[S]earch current [W]ord',
+      })
+      vim.keymap.set('n', '<leader>r', builtin.live_grep, {
+        desc = 'Search by [R]ipgrep',
+      })
+      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, {
+        desc = '[S]earch [D]iagnostics',
+      })
+      vim.keymap.set('n', '<leader>sr', builtin.resume, {
+        desc = '[S]earch [R]esume',
+      })
+      vim.keymap.set('n', '<leader>s.', builtin.oldfiles, {
+        desc = '[S]earch Recent Files ("." for repeat)',
+      })
+      vim.keymap.set('n', '<leader>b', builtin.buffers, {
+        desc = 'Find existing [B]uffers',
+      })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -701,7 +658,9 @@ require('lazy').setup({
             previewer = false,
           }
         )
-      end, { desc = '[/] Fuzzily search in current buffer' })
+      end, {
+        desc = '[/] Fuzzily search in current buffer',
+      })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
@@ -710,12 +669,16 @@ require('lazy').setup({
           grep_open_files = true,
           prompt_title = 'Live Grep in Open Files',
         }
-      end, { desc = '[S]earch [/] in Open Files' })
+      end, {
+        desc = '[S]earch [/] in Open Files',
+      })
 
       -- Shortcut for searching your Neovim configuration files
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[S]earch [N]eovim files' })
+      end, {
+        desc = '[S]earch [N]eovim files',
+      })
     end,
   },
 
@@ -767,12 +730,10 @@ require('lazy').setup({
           -- for LSP related items. It sets the mode, buffer and description for us each time.
           local map = function(keys, func, desc, mode)
             mode = mode or 'n'
-            vim.keymap.set(
-              mode,
-              keys,
-              func,
-              { buffer = event.buf, desc = 'LSP: ' .. desc }
-            )
+            vim.keymap.set(mode, keys, func, {
+              buffer = event.buf,
+              desc = 'LSP: ' .. desc,
+            })
           end
 
           -- Jump to the definition of the word under your cursor.
