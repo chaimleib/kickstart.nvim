@@ -44,7 +44,7 @@ o.foldexpr = 'nvim_treesitter#foldexpr()'
 
 -- See :h fo-table
 o.formatoptions = 'jcroqln'
-o.textwidth = 80
+vim.bo.textwidth = 80
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
