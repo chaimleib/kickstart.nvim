@@ -1048,6 +1048,11 @@ require('lazy').setup({
         desc = '[F]ormat buffer',
       },
     },
+    formatters = {
+      golangci_lint = {
+        prepend_args = { '--config', 'golangci-lint.y*ml' },
+      },
+    },
     opts = {
       notify_on_error = false,
       format_on_save = function(bufnr)
@@ -1068,7 +1073,11 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        go = { 'goimports' },
+        go = {
+          'golangci-lint',
+          'goimports',
+          stop_after_first = true,
+        },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
