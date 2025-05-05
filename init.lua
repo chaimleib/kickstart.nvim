@@ -625,7 +625,9 @@ require('lazy').setup {
         vim.keymap.set('n', '<leader>sk', builtin.keymaps, {
           desc = '[S]earch [K]eymaps',
         })
-        vim.keymap.set('n', '<leader>e', builtin.find_files, {
+        vim.keymap.set('n', '<leader>e', function()
+          builtin.find_files { hidden = true }
+        end, {
           desc = 'S[e]arch files',
         })
         vim.keymap.set('n', '<leader>ss', builtin.builtin, {
