@@ -239,6 +239,12 @@ require('lazy').setup {
         vim.keymap.set('n', '<M-.>', '<cmd>SidewaysRight<cr>', {
           desc = 'Move list item right',
         })
+        vim.keymap.set('n', '≤', '<cmd>SidewaysLeft<cr>', {
+          desc = 'Move list item left',
+        })
+        vim.keymap.set('n', '≥', '<cmd>SidewaysRight<cr>', {
+          desc = 'Move list item right',
+        })
       end,
     },
     'AndrewRadev/tagalong.vim',
