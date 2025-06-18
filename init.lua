@@ -331,6 +331,32 @@ require('lazy').setup {
         vim.keymap.set('n', '<M-r>', daprepl.toggle, {
           desc = 'DBG: [R]epl',
         })
+        -- macOS equivalent keys
+        vim.keymap.set('n', '∫', dapui.toggle, {
+          desc = 'DBG: Toggle De[B]ugger',
+        })
+        vim.keymap.set('n', 'ı', dap.toggle_breakpoint, {
+          desc = 'DBG: Toggle debugging [B]reakpoint',
+        })
+        vim.keymap.set('n', '†', dapgo.debug_test, {
+          desc = 'DBG: Debug [T]est',
+        })
+        vim.keymap.set('n', 'ç', dap.continue, {
+          desc = 'DBG: [C]ontinue or start debugging',
+        })
+        vim.keymap.set('n', '∂', dap.step_over, {
+          desc = 'DBG: [D]own',
+        })
+        -- circumflex is a combining glyph
+        -- vim.keymap.set('n', '<M-i>', dap.step_into, {
+        --   desc = 'DBG: [I]nto',
+        -- })
+        vim.keymap.set('n', 'ø', dap.step_out, {
+          desc = 'DBG: [O]ut',
+        })
+        vim.keymap.set('n', '®', daprepl.toggle, {
+          desc = 'DBG: [R]epl',
+        })
 
         vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = '#993939' })
         vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = '#98c379' })
