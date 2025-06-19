@@ -291,71 +291,89 @@ require('lazy').setup {
       end,
     },
     {
+      'mfussenegger/nvim-dap',
+      lazy = true,
+      config = function()
+        local dap = require 'dap'
+        local daprepl = require 'dap.repl'
+        local map = function(key, f, opts)
+          vim.keymap.set('n', key, f, opts)
+        end
+        map('<M-B>', dap.toggle_breakpoint, {
+          desc = 'DBG: Toggle debugging [B]reakpoint',
+        })
+        map('<M-c>', dap.continue, {
+          desc = 'DBG: [C]ontinue or start debugging',
+        })
+        map('<M-d>', dap.step_over, {
+          desc = 'DBG: [D]own',
+        })
+        map('<M-i>', dap.step_into, {
+          desc = 'DBG: [I]nto',
+        })
+        map('<M-o>', dap.step_out, {
+          desc = 'DBG: [O]ut',
+        })
+        map('<M-r>', daprepl.toggle, {
+          desc = 'DBG: [R]epl',
+        })
+        -- macOS equivalent keys
+        map('ı', dap.toggle_breakpoint, {
+          desc = 'DBG: Toggle debugging [B]reakpoint',
+        })
+        map('ç', dap.continue, {
+          desc = 'DBG: [C]ontinue or start debugging',
+        })
+        map('∂', dap.step_over, {
+          desc = 'DBG: [D]own',
+        })
+        -- vim.keymap.set('n', '<M-i>', dap.step_into, { desc = 'DBG: [I]nto', })
+        map('ø', dap.step_out, {
+          desc = 'DBG: [O]ut',
+        })
+        map('®', daprepl.toggle, {
+          desc = 'DBG: [R]epl',
+        })
+      end,
+    },
+    {
+      'leoluz/nvim-dap-go',
+      dependencies = {
+        'mfussenegger/nvim-dap',
+      },
+      config = function()
+        local dapgo = require 'dap-go'
+        dapgo.setup()
+        local map = function(key, f, opts)
+          vim.keymap.set('n', key, f, opts)
+        end
+        map('<M-t>', dapgo.debug_test, {
+          desc = 'DBG: Debug [T]est',
+        })
+        -- macOS equivalent keys
+        map('†', dapgo.debug_test, {
+          desc = 'DBG: Debug [T]est',
+        })
+      end,
+    },
+    {
       'rcarriga/nvim-dap-ui',
       dependencies = {
         'mfussenegger/nvim-dap',
         'nvim-neotest/nvim-nio',
-        'leoluz/nvim-dap-go',
       },
       config = function()
         local dapui = require 'dapui'
         dapui.setup()
-
-        local dapgo = require 'dap-go'
-        dapgo.setup()
-
-        local dap = require 'dap'
-        local daprepl = require 'dap.repl'
-
-        vim.keymap.set('n', '<M-b>', dapui.toggle, {
+        local map = function(key, f, opts)
+          vim.keymap.set('n', key, f, opts)
+        end
+        map('<M-b>', dapui.toggle, {
           desc = 'DBG: Toggle De[B]ugger',
-        })
-        vim.keymap.set('n', '<M-B>', dap.toggle_breakpoint, {
-          desc = 'DBG: Toggle debugging [B]reakpoint',
-        })
-        vim.keymap.set('n', '<M-t>', dapgo.debug_test, {
-          desc = 'DBG: Debug [T]est',
-        })
-        vim.keymap.set('n', '<M-c>', dap.continue, {
-          desc = 'DBG: [C]ontinue or start debugging',
-        })
-        vim.keymap.set('n', '<M-d>', dap.step_over, {
-          desc = 'DBG: [D]own',
-        })
-        vim.keymap.set('n', '<M-i>', dap.step_into, {
-          desc = 'DBG: [I]nto',
-        })
-        vim.keymap.set('n', '<M-o>', dap.step_out, {
-          desc = 'DBG: [O]ut',
-        })
-        vim.keymap.set('n', '<M-r>', daprepl.toggle, {
-          desc = 'DBG: [R]epl',
         })
         -- macOS equivalent keys
-        vim.keymap.set('n', '∫', dapui.toggle, {
+        map('∫', dapui.toggle, {
           desc = 'DBG: Toggle De[B]ugger',
-        })
-        vim.keymap.set('n', 'ı', dap.toggle_breakpoint, {
-          desc = 'DBG: Toggle debugging [B]reakpoint',
-        })
-        vim.keymap.set('n', '†', dapgo.debug_test, {
-          desc = 'DBG: Debug [T]est',
-        })
-        vim.keymap.set('n', 'ç', dap.continue, {
-          desc = 'DBG: [C]ontinue or start debugging',
-        })
-        vim.keymap.set('n', '∂', dap.step_over, {
-          desc = 'DBG: [D]own',
-        })
-        -- circumflex is a combining glyph
-        -- vim.keymap.set('n', '<M-i>', dap.step_into, {
-        --   desc = 'DBG: [I]nto',
-        -- })
-        vim.keymap.set('n', 'ø', dap.step_out, {
-          desc = 'DBG: [O]ut',
-        })
-        vim.keymap.set('n', '®', daprepl.toggle, {
-          desc = 'DBG: [R]epl',
         })
 
         vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = '#993939' })
@@ -374,48 +392,52 @@ require('lazy').setup {
     'tpope/vim-repeat',
     -- 'tpope/vim-surround', -- see echasnovski/mini.nvim
     'tpope/tpope-vim-abolish',
-    {
-      'zbirenbaum/copilot-cmp',
-      dependencies = { 'hrsh7th/nvim-cmp' }, -- Ensure nvim-cmp is installed
-      config = function()
-        require('copilot_cmp').setup()
-      end,
-    },
-    {
-      'github/copilot.vim',
-      config = function()
-        vim.g.copilot_autostart = true -- Enable autostart
-        vim.g.copilot_no_tab_map = true -- Disable default Tab mapping
-        -- accept suggestion
-        vim.api.nvim_set_keymap(
-          'i',
-          '<C-g>',
-          'copilot#Accept("<CR>")',
-          { silent = true, expr = true }
-        )
-        -- accept word
-        vim.api.nvim_set_keymap(
-          'i',
-          '<C-f>',
-          'copilot#AcceptWord()',
-          { silent = true, expr = true }
-        )
-        -- next suggestion
-        vim.api.nvim_set_keymap(
-          'i',
-          '<C-j>',
-          'copilot#Next()',
-          { silent = true, expr = true }
-        )
-        -- previous suggestion
-        vim.api.nvim_set_keymap(
-          'i',
-          '<C-k>',
-          'copilot#Previous()',
-          { silent = true, expr = true }
-        )
-      end,
-    },
+    os.getenv 'COPILOT' ~= nil
+        and {
+          'zbirenbaum/copilot-cmp',
+          dependencies = { 'hrsh7th/nvim-cmp' }, -- Ensure nvim-cmp is installed
+          config = function()
+            require('copilot_cmp').setup()
+          end,
+        }
+      or {},
+    os.getenv 'COPILOT' ~= nil
+        and {
+          'github/copilot.vim',
+          config = function()
+            vim.g.copilot_autostart = true -- Enable autostart
+            vim.g.copilot_no_tab_map = true -- Disable default Tab mapping
+            -- accept suggestion
+            vim.api.nvim_set_keymap(
+              'i',
+              '<C-g>',
+              'copilot#Accept("<CR>")',
+              { silent = true, expr = true }
+            )
+            -- accept word
+            vim.api.nvim_set_keymap(
+              'i',
+              '<C-f>',
+              'copilot#AcceptWord()',
+              { silent = true, expr = true }
+            )
+            -- next suggestion
+            vim.api.nvim_set_keymap(
+              'i',
+              '<C-j>',
+              'copilot#Next()',
+              { silent = true, expr = true }
+            )
+            -- previous suggestion
+            vim.api.nvim_set_keymap(
+              'i',
+              '<C-k>',
+              'copilot#Previous()',
+              { silent = true, expr = true }
+            )
+          end,
+        }
+      or {},
     -- See `:help gitsigns` to understand what the configuration keys do
     { -- Adds git related signs to the gutter, as well as utilities for managing changes
       'lewis6991/gitsigns.nvim',
