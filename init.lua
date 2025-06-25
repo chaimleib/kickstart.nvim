@@ -120,6 +120,9 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 2
 
+vim.diagnostic.config {
+  virtual_lines = true,
+}
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -887,6 +890,7 @@ require('lazy').setup {
             )
 
             -- Show diagnostics for the word under your cursor.
+            -- For its configs, see vim.diagnostic.config
             map('<leader>E', vim.diagnostic.open_float, '[E]rror')
 
             -- WARN: This is not Goto Definition, this is Goto Declaration.
