@@ -348,11 +348,42 @@ require('lazy').setup {
           vim.keymap.set('n', key, f, opts)
         end
         map('<M-t>', dapgo.debug_test, {
-          desc = 'DBG: Debug [T]est',
+          desc = 'DBG: Go debug [T]est',
         })
         -- macOS equivalent keys
         map('†', dapgo.debug_test, {
-          desc = 'DBG: Debug [T]est',
+          desc = 'DBG: Go debug [T]est',
+        })
+      end,
+    },
+    {
+      'mfussenegger/nvim-dap-python',
+      dependencies = {
+        'mfussenegger/nvim-dap',
+      },
+      config = function()
+        local dappy = require 'dap-python'
+        -- requires:
+        --   echo 'eval "$(pyenv virtualenv-init -)"' >> .bashrc
+        --   pyenv virtualenv debugpy
+        --   pyenv activate debugpy
+        --   pip install debugpy
+        dappy.setup(os.getenv 'HOME' .. '/.pyenv/versions/debugpy/bin/python')
+        local map = function(key, f, opts)
+          vim.keymap.set('n', key, f, opts)
+        end
+        map('<M-f>', dappy.test_method, {
+          desc = 'DBG: Python debug [M]ethod',
+        })
+        map('<M-k>', dappy.test_class, {
+          desc = 'DBG: Python debug [K]lass',
+        })
+        -- macOS equivalent keys
+        map('ƒ', dappy.test_method, {
+          desc = 'DBG: Python debug [M]ethod',
+        })
+        map('˚', dappy.test_class, {
+          desc = 'DBG: Python debug [K]lass',
         })
       end,
     },
