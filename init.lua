@@ -231,6 +231,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup {
   spec = {
     -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+    'jxnblk/vim-mdx-js', -- MDX syntax highlighting
     'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
     {
