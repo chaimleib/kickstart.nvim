@@ -111,6 +111,8 @@ vim.opt.splitbelow = true
 --  and `:help 'listchars'`
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.cmd.hi 'EolSpace ctermbg=9 guibg=#ff3333'
+vim.cmd.match 'EolSpace /\\s\\+$/'
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
@@ -120,6 +122,9 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 2
+
+--- `:diffs <file> defaults to a vsplit
+vim.opt.diffopt = { 'vertical' }
 
 vim.diagnostic.config {
   virtual_lines = true,
