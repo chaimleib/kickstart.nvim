@@ -295,6 +295,7 @@ require('lazy').setup {
     {
       'FooSoft/vim-argwrap',
       config = function()
+        vim.g.argwrap_tail_comma = true
         vim.keymap.set('n', '<leader>a', '<cmd>ArgWrap<cr>', {
           desc = 'Wrap/Unwrap [a]rguments',
         })
