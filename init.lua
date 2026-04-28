@@ -451,34 +451,18 @@ require('lazy').setup {
           config = function()
             vim.g.copilot_autostart = true -- Enable autostart
             vim.g.copilot_no_tab_map = true -- Disable default Tab mapping
-            -- accept suggestion
-            vim.api.nvim_set_keymap(
-              'i',
-              '<C-g>',
-              'copilot#Accept("<CR>")',
-              { silent = true, expr = true }
-            )
-            -- accept word
-            vim.api.nvim_set_keymap(
-              'i',
-              '<C-f>',
-              'copilot#AcceptWord()',
-              { silent = true, expr = true }
-            )
-            -- next suggestion
-            vim.api.nvim_set_keymap(
-              'i',
-              '<C-j>',
-              'copilot#Next()',
-              { silent = true, expr = true }
-            )
-            -- previous suggestion
-            vim.api.nvim_set_keymap(
-              'i',
-              '<C-k>',
-              'copilot#Previous()',
-              { silent = true, expr = true }
-            )
+
+            local imap = function(lhs, rhs, desc)
+              vim.keymap.set('i', lhs, rhs, {
+                silent = true,
+                expr = true,
+                desc = desc,
+              })
+            end
+            imap('<C-g>', 'copilot#Accept("<CR>")', 'Copilot accept suggestion')
+            imap('<C-f>', 'copilot#AcceptWord()', 'Copilot accept word')
+            imap('<C-j>', 'copilot#Next()', 'Copilot next suggestion')
+            imap('<C-k>', 'copilot#Previous()', 'Copilot previous suggestion')
           end,
         }
       or {},
