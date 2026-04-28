@@ -501,11 +501,20 @@ require('lazy').setup {
           end
 
           -- Navigation
+          local nav_opts = {
+            wrap = true,
+            foldopen = true,
+            navigation_message = false,
+            greedy = false,
+            count = 1,
+            preview = true,
+            target = 'unstaged',
+          }
           map('n', ']c', function()
             if vim.wo.diff then
               vim.cmd.normal { ']c', bang = true }
             else
-              gitsigns.nav_hunk 'next'
+              gitsigns.nav_hunk('next', nav_opts)
             end
           end, {
             desc = 'Next [C]hange',
@@ -515,7 +524,7 @@ require('lazy').setup {
             if vim.wo.diff then
               vim.cmd.normal { '[c', bang = true }
             else
-              gitsigns.nav_hunk 'prev'
+              gitsigns.nav_hunk('prev', nav_opts)
             end
           end, {
             desc = 'Previous [C]hange',
