@@ -466,6 +466,35 @@ require('lazy').setup {
           end,
         }
       or {},
+    os.getenv 'COPILOT' ~= nil
+        and {
+          'CopilotC-Nvim/CopilotChat.nvim',
+          dependencies = {
+            { 'nvim-lua/plenary.nvim', branch = 'master' },
+          },
+          build = 'make tiktoken',
+          opts = {
+            model = 'gpt-5.4', -- AI model to use
+            trusted_tools = nil, -- Require approval for all tool calls
+            -- temperature = 0.5, -- Lower = focused, higher = creative
+            sticky = {
+              '#buffer',
+              '#gitdiff:staged',
+            },
+            window = {
+              layout = 'vertical', -- 'vertical', 'horizontal', 'float'
+              width = 80, -- columns
+            },
+            auto_insert_mode = true, -- Enter insert mode when opening
+            auto_fold = false, -- Automatically folds non-assistant messages
+            mappings = {
+              reset = {
+                normal = '<leader>cr',
+              },
+            },
+          },
+        }
+      or {},
     -- See `:help gitsigns` to understand what the configuration keys do
     { -- Adds git related signs to the gutter, as well as utilities for managing changes
       'lewis6991/gitsigns.nvim',
