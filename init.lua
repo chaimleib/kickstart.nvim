@@ -317,13 +317,13 @@ require('lazy').setup {
           desc = 'DBG: [C]ontinue or start debugging',
         })
         map('<M-d>', dap.step_over, {
-          desc = 'DBG: [D]own',
+          desc = 'DBG: Step over ([D]own)',
         })
-        map('<M-i>', dap.step_into, {
-          desc = 'DBG: [I]nto',
+        map('<M-g>', dap.step_into, {
+          desc = 'DBG: Step into ([G]o into; Ri[g]ht)',
         })
         map('<M-o>', dap.step_out, {
-          desc = 'DBG: [O]ut',
+          desc = 'DBG: Step [O]ut',
         })
         map('<M-r>', daprepl.toggle, {
           desc = 'DBG: [R]epl',
@@ -336,11 +336,13 @@ require('lazy').setup {
           desc = 'DBG: [C]ontinue or start debugging',
         })
         map('∂', dap.step_over, {
-          desc = 'DBG: [D]own',
+          desc = 'DBG: Step over ([D]own)',
         })
-        -- vim.keymap.set('n', '<M-i>', dap.step_into, { desc = 'DBG: [I]nto', })
+        map('©', dap.step_into, {
+          desc = 'DBG: Step into ([G]o into; Ri[g]ht)',
+        })
         map('ø', dap.step_out, {
-          desc = 'DBG: [O]ut',
+          desc = 'DBG: Step [O]ut',
         })
         map('®', daprepl.toggle, {
           desc = 'DBG: [R]epl',
@@ -800,6 +802,7 @@ require('lazy').setup {
         library = {
           -- Load luvit types when the `vim.uv` word is found
           { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+          'nvim-dap-ui',
         },
       },
     },
