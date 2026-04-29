@@ -494,6 +494,7 @@ require('lazy').setup {
             auto_fold = false, -- Automatically folds non-assistant messages
             mappings = {
               reset = {
+                -- default: <C-l>, which conflicts with window changing
                 normal = '<leader>cr',
                 insert = '<C-R>',
               },
