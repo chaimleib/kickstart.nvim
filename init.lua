@@ -495,6 +495,7 @@ require('lazy').setup {
             mappings = {
               reset = {
                 normal = '<leader>cr',
+                insert = '<C-R>',
               },
             },
           },
