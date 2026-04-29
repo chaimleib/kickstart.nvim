@@ -456,10 +456,15 @@ require('lazy').setup {
               vim.keymap.set('i', lhs, rhs, {
                 silent = true,
                 expr = true,
+                replace_keycodes = false,
                 desc = desc,
               })
             end
-            imap('<C-g>', 'copilot#Accept("<CR>")', 'Copilot accept suggestion')
+            imap(
+              '<C-g>',
+              'copilot#Accept("\\<CR>")',
+              'Copilot accept suggestion'
+            )
             imap('<C-f>', 'copilot#AcceptWord()', 'Copilot accept word')
             imap('<C-j>', 'copilot#Next()', 'Copilot next suggestion')
             imap('<C-k>', 'copilot#Previous()', 'Copilot previous suggestion')
