@@ -44,8 +44,8 @@ o.foldmethod = 'expr' -- Set fold method to "expr"
 o.foldenable = true -- Enable folding by default
 o.foldlevel = 99 -- Open all folds by default
 o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
--- vim.treesitter.language.register('markdown', 'copilot-chat')
--- vim.treesitter.language.register('markdown', 'codecompanion')
+vim.treesitter.language.register('markdown', 'copilot-chat')
+vim.treesitter.language.register('markdown', 'codecompanion')
 
 -- tabs
 o.tabstop = 2
@@ -203,21 +203,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   ),
   callback = function()
     vim.highlight.on_yank()
-  end,
-})
-
--- Disable treesitter highlighting for markdown files,
--- and rely on Neovim's builtin highlighting instead.
--- In Neovim 0.12.2, treesitter was triggering an error
--- `attempt to call method 'range' (a nil value)`
--- when editing Markdown files containing code blocks with certain languages
--- (e.g. Python).
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'markdown' },
-  desc = 'Disable treesitter highlighting for markdown files',
-  callback = function()
-    vim.treesitter.stop()
-    vim.wo.foldmethod = 'indent' -- since treesitter foldexpr triggers parsing
   end,
 })
 
@@ -1347,7 +1332,7 @@ require('lazy').setup {
     { -- Highlight, edit, and navigate code
       'nvim-treesitter/nvim-treesitter',
       build = ':TSUpdate',
-      main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+      main = 'nvim-treesitter.config', -- Sets main module to use for opts
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
       opts = {
         ensure_installed = {
@@ -1367,18 +1352,10 @@ require('lazy').setup {
         auto_install = true,
         highlight = {
           enable = true,
-          -- Temporarily disable markdown highlighting due to Neovim API changes
-          -- breaking treesitter's markdown parser.
-          disable = { 'markdown' },
           -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
           --  If you are experiencing weird indenting issues, add the language to
           --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-          additional_vim_regex_highlighting = {
-            -- Use neovim's regex-based highlighting for markdown
-            -- until the treesitter parser is fixed.
-            'markdown',
-            'ruby',
-          },
+          additional_vim_regex_highlighting = { 'ruby' },
         },
         indent = { enable = true, disable = { 'ruby' } },
       },
