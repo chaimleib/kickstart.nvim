@@ -41,8 +41,8 @@ vim.keymap.set('i', '<M-BS>', '<Esc><Space>cb', { silent = true })
 
 -- folding
 o.foldmethod = 'expr' -- Set fold method to "expr"
-o.foldenable = true -- Enable folding by default
-o.foldlevel = 99 -- Open all folds by default
+o.foldenable = true   -- Enable folding by default
+o.foldlevel = 99      -- Open all folds by default
 o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.treesitter.language.register('markdown', 'copilot-chat')
 vim.treesitter.language.register('markdown', 'codecompanion')
@@ -240,7 +240,7 @@ require('lazy').setup {
   spec = {
     -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
     'jxnblk/vim-mdx-js', -- MDX syntax highlighting
-    'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+    'tpope/vim-sleuth',  -- Detect tabstop and shiftwidth automatically
 
     {
       'AndrewRadev/sideways.vim',
@@ -439,71 +439,140 @@ require('lazy').setup {
     -- 'tpope/vim-surround', -- see echasnovski/mini.nvim
     'tpope/tpope-vim-abolish',
     os.getenv 'COPILOT' ~= nil
-        and {
-          'zbirenbaum/copilot-cmp',
-          dependencies = { 'hrsh7th/nvim-cmp' }, -- Ensure nvim-cmp is installed
-          config = function()
-            require('copilot_cmp').setup()
-          end,
-        }
-      or {},
+    and {
+      'zbirenbaum/copilot-cmp',
+      dependencies = { 'hrsh7th/nvim-cmp' }, -- Ensure nvim-cmp is installed
+      config = function()
+        require('copilot_cmp').setup()
+      end,
+    }
+    or {},
     os.getenv 'COPILOT' ~= nil
-        and {
-          'github/copilot.vim',
-          config = function()
-            vim.g.copilot_autostart = true -- Enable autostart
-            vim.g.copilot_no_tab_map = true -- Disable default Tab mapping
+    and {
+      'github/copilot.vim',
+      config = function()
+        vim.g.copilot_autostart = true  -- Enable autostart
+        vim.g.copilot_no_tab_map = true -- Disable default Tab mapping
 
-            local imap = function(lhs, rhs, desc)
-              vim.keymap.set('i', lhs, rhs, {
-                silent = true,
-                expr = true,
-                replace_keycodes = false,
-                desc = desc,
-              })
-            end
-            imap(
-              '<C-g>',
-              'copilot#Accept("\\<CR>")',
-              'Copilot accept suggestion'
-            )
-            imap('<C-f>', 'copilot#AcceptWord()', 'Copilot accept word')
-            imap('<C-j>', 'copilot#Next()', 'Copilot next suggestion')
-            imap('<C-k>', 'copilot#Previous()', 'Copilot previous suggestion')
-          end,
-        }
-      or {},
+        local imap = function(lhs, rhs, desc)
+          vim.keymap.set('i', lhs, rhs, {
+            silent = true,
+            expr = true,
+            replace_keycodes = false,
+            desc = desc,
+          })
+        end
+        imap(
+          '<C-g>',
+          'copilot#Accept("\\<CR>")',
+          'Copilot accept suggestion'
+        )
+        imap('<C-f>', 'copilot#AcceptWord()', 'Copilot accept word')
+        imap('<C-j>', 'copilot#Next()', 'Copilot next suggestion')
+        imap('<C-k>', 'copilot#Previous()', 'Copilot previous suggestion')
+      end,
+    }
+    or {},
     os.getenv 'COPILOT' ~= nil
-        and {
-          'CopilotC-Nvim/CopilotChat.nvim',
-          dependencies = {
-            { 'nvim-lua/plenary.nvim', branch = 'master' },
+    and {
+      'CopilotC-Nvim/CopilotChat.nvim',
+      dependencies = {
+        { 'nvim-lua/plenary.nvim', branch = 'master' },
+      },
+      build = 'make tiktoken',
+      opts = {
+        model = 'gpt-5.4',   -- AI model to use
+        trusted_tools = nil, -- Require approval for all tool calls
+        -- temperature = 0.5, -- Lower = focused, higher = creative
+        sticky = {
+          '#buffer',
+          '#gitdiff:staged',
+        },
+        window = {
+          layout = 'vertical',   -- 'vertical', 'horizontal', 'float'
+          width = 80,            -- columns
+        },
+        auto_insert_mode = true, -- Enter insert mode when opening
+        auto_fold = false,       -- Automatically folds non-assistant messages
+        mappings = {
+          reset = {
+            -- default: <C-l>, which conflicts with window changing
+            normal = '<leader>cr',
+            insert = '<C-R>',
           },
-          build = 'make tiktoken',
-          opts = {
-            model = 'gpt-5.4', -- AI model to use
-            trusted_tools = nil, -- Require approval for all tool calls
-            -- temperature = 0.5, -- Lower = focused, higher = creative
-            sticky = {
-              '#buffer',
-              '#gitdiff:staged',
-            },
-            window = {
-              layout = 'vertical', -- 'vertical', 'horizontal', 'float'
-              width = 80, -- columns
-            },
-            auto_insert_mode = true, -- Enter insert mode when opening
-            auto_fold = false, -- Automatically folds non-assistant messages
-            mappings = {
-              reset = {
-                -- default: <C-l>, which conflicts with window changing
-                normal = '<leader>cr',
-                insert = '<C-R>',
-              },
-            },
-          },
-        }
-      or {},
+        },
+      },
+    }
+    or {},
+    -- {
+    --   'olimorris/codecompanion.nvim',
+    --   dependencies = {
+    --     'nvim-lua/plenary.nvim',
+    --     'nvim-treesitter/nvim-treesitter',
+    --   },
+    --   config = function()
+    --     require('codecompanion').setup {
+    --       adapters = {
+    --         http = {
+    --           ollama = function()
+    --             return require('codecompanion.adapters').extend('ollama', {
+    --               schema = {
+    --                 model = {
+    --                   default = 'granite4:micro',
+    --                 },
+    --               },
+    --             })
+    --           end,
+    --         },
+    --       },
+    --       strategies = {
+    --         chat = {
+    --           adapter = 'ollama',
+    --         },
+    --         inline = {
+    --           adapter = 'ollama',
+    --         },
+    --       },
+    --     }
+    -- vim.keymap.set({ 'n', 'v' }, '<C-g>', '', { desc = 'AI' })
+    -- vim.keymap.set(
+    --   'n',
+    --   '<leader>ac',
+    --   '<cmd>CodeCompanionChat Toggle<cr>',
+    --   { desc = 'Open CodeCompanion Chat' }
+    -- )
+    -- vim.keymap.set(
+    --   'n',
+    --   '<leader>ai',
+    --   '<cmd>CodeCompanion<cr>',
+    --   { desc = 'Inline CodeCompanion' }
+    -- )
+    -- vim.keymap.set(
+    --   'n',
+    --   '<leader>aa',
+    --   '<cmd>CodeCompanionActions<cr>',
+    --   { desc = 'CodeCompanion Actions' }
+    -- )
+    --   end,
+    -- },
+    -- {
+    --   'huggingface/llm.nvim',
+    --   config = function()
+    --     require('llm').setup {
+    --       model = 'granite4:micro',
+    --       backend = 'ollama',
+    --       url = 'http://localhost:11434',
+    --       fim = {
+    --         enabled = true,
+    --         prefix = '<|fim_prefix|>',
+    --         middle = '<|fim_middle|>',
+    --         suffix = '<|fim_suffix|>',
+    --       },
+    --       accept_keymap = '<C-g>',
+    --       enable_suggestions_on_startup = true,
+    --     }
+    --   end,
+    -- },
     -- See `:help gitsigns` to understand what the configuration keys do
     { -- Adds git related signs to the gutter, as well as utilities for managing changes
       'lewis6991/gitsigns.nvim',
@@ -625,7 +694,8 @@ require('lazy').setup {
 
     { -- Useful plugin to show you pending keybinds.
       'folke/which-key.nvim',
-      event = 'VimEnter', -- Sets the loading event to 'VimEnter'
+      -- Sets the loading event to 'VimEnter'
+      event = 'VimEnter',
       opts = {
         -- delay between pressing a key and opening which-key (milliseconds)
         -- this setting is independent of vim.opt.timeoutlen
@@ -669,7 +739,7 @@ require('lazy').setup {
 
         -- Document existing key chains
         spec = {
-          { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
+          { '<leader>c', group = '[C]ode',     mode = { 'n', 'x' } },
           { '<leader>d', group = '[D]ocument' },
           { '<leader>s', group = '[S]earch' },
           { '<leader>w', group = '[W]orkspace' },
@@ -699,7 +769,7 @@ require('lazy').setup {
         { 'nvim-telescope/telescope-ui-select.nvim' },
 
         -- Useful for getting pretty icons, but requires a Nerd Font.
-        { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+        { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
       },
       config = function()
         -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -832,13 +902,19 @@ require('lazy').setup {
       dependencies = {
         -- Automatically install LSPs and related tools to stdpath for Neovim
         -- Mason must be loaded before its dependents so we need to set it up here.
-        -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-        { 'williamboman/mason.nvim', opts = {} },
+        {
+          'williamboman/mason.nvim',
+          -- `opts = {}` is the same as calling `require('mason').setup({})`
+          opts = {},
+        },
         'williamboman/mason-lspconfig.nvim',
         'WhoIsSethDaniel/mason-tool-installer.nvim',
 
         -- Useful status updates for LSP.
-        { 'j-hui/fidget.nvim', opts = {} },
+        {
+          'j-hui/fidget.nvim',
+          opts = {},
+        },
 
         -- Allows extra capabilities provided by nvim-cmp
         'hrsh7th/cmp-nvim-lsp',
@@ -854,11 +930,6 @@ require('lazy').setup {
             { clear = true }
           ),
           callback = function(event)
-            -- NOTE: Remember that Lua is a real programming language, and as such it is possible
-            -- to define small helper and utility functions so you don't have to repeat yourself.
-            --
-            -- In this case, we create a function that lets us more easily define mappings specific
-            -- for LSP related items. It sets the mode, buffer and description for us each time.
             local map = function(keys, func, desc, mode)
               mode = mode or 'n'
               vim.keymap.set(mode, keys, func, {
@@ -944,10 +1015,10 @@ require('lazy').setup {
             -- When you move your cursor, the highlights will be cleared (the second autocommand).
             local client = vim.lsp.get_client_by_id(event.data.client_id)
             if
-              client
-              and client:supports_method(
-                vim.lsp.protocol.Methods.textDocument_documentHighlight
-              )
+                client
+                and client:supports_method(
+                  vim.lsp.protocol.Methods.textDocument_documentHighlight
+                )
             then
               local highlight_augroup = vim.api.nvim_create_augroup(
                 'kickstart-lsp-highlight',
@@ -985,10 +1056,10 @@ require('lazy').setup {
             --
             -- This may be unwanted, since they displace some of your code
             if
-              client
-              and client:supports_method(
-                vim.lsp.protocol.Methods.textDocument_inlayHint
-              )
+                client
+                and client:supports_method(
+                  vim.lsp.protocol.Methods.textDocument_inlayHint
+                )
             then
               map('<leader>th', function()
                 vim.lsp.inlay_hint.enable(
@@ -1002,7 +1073,7 @@ require('lazy').setup {
         -- Change diagnostic symbols in the sign column (gutter)
         if vim.g.have_nerd_font then
           local signs =
-            { ERROR = '', WARN = '', INFO = '', HINT = '' }
+          { ERROR = '', WARN = '', INFO = '', HINT = '' }
           local diagnostic_signs = {}
           for type, icon in pairs(signs) do
             diagnostic_signs[vim.diagnostic.severity[type]] = icon
@@ -1283,30 +1354,24 @@ require('lazy').setup {
           content = {
             active = function()
               local mode, mode_hl =
-                statusline.section_mode { trunc_width = 120 }
+                  statusline.section_mode { trunc_width = 120 }
               -- local git = statusline.section_git { trunc_width = 40 }
               -- local diff = statusline.section_diff { trunc_width = 75 }
               -- local lsp = statusline.section_lsp { trunc_width = 75 }
               local diagnostics =
-                statusline.section_diagnostics { trunc_width = 75 }
+                  statusline.section_diagnostics { trunc_width = 75 }
               -- local filename = statusline.section_filename { trunc_width = 140 }
               -- local fileinfo = statusline.section_fileinfo { trunc_width = 120 }
               -- local location = statusline.section_location { trunc_width = 75 }
               -- local search = statusline.section_searchcount { trunc_width = 75 }
               return statusline.combine_groups {
-                { hl = mode_hl, strings = { mode } },
-                {
-                  hl = 'MiniStatuslineDevinfo',
-                  strings = { diagnostics },
-                },
+                { hl = mode_hl,                 strings = { mode } },
+                { hl = 'MiniStatuslineDevinfo', strings = { diagnostics } },
                 '%<', -- Mark general truncate point
                 { hl = 'MiniStatuslineFilename', strings = { filename() } },
                 '%=', -- End left alignment
-                {
-                  hl = 'MiniStatuslineFileinfo',
-                  strings = { vim.bo.filetype },
-                },
-                { hl = mode_hl, strings = { '%2v %l/%L' } },
+                { hl = 'MiniStatuslineFileinfo', strings = { vim.bo.filetype } },
+                { hl = mode_hl,                  strings = { '%2v %l/%L' } },
               }
             end,
             inactive = function()
@@ -1354,9 +1419,11 @@ require('lazy').setup {
         auto_install = true,
         highlight = {
           enable = true,
-          -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-          --  If you are experiencing weird indenting issues, add the language to
-          --  the list of additional_vim_regex_highlighting and disabled languages for indent.
+          -- Some languages (such as Ruby)
+          -- depend on vim's regex highlighting system for indent rules.
+          --  If you are experiencing weird indenting issues,
+          --  add the language to the list of additional_vim_regex_highlighting
+          --  and disabled languages for indent.
           additional_vim_regex_highlighting = { 'ruby' },
         },
         indent = { enable = true, disable = { 'ruby' } },
@@ -1369,36 +1436,24 @@ require('lazy').setup {
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     },
 
-    -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
-    -- init.lua. If you want these files, they are in the repository, so you can just download them and
-    -- place them in the correct locations.
-
-    -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
+    -- The import below can automatically add your own
+    -- plugins, configuration, etc from `lua/custom/plugins/*.lua`.
+    -- This is the easiest way to modularize your config.
     --
-    --  Here are some example plugins that I've included in the Kickstart repository.
-    --  Uncomment any of the lines below to enable them (you will need to restart nvim).
-    --
-    -- require 'kickstart.plugins.debug',
-    -- require 'kickstart.plugins.indent_line',
-    -- require 'kickstart.plugins.lint',
-    -- require 'kickstart.plugins.autopairs',
-    -- require 'kickstart.plugins.neo-tree',
-    -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-
-    -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-    --    This is the easiest way to modularize your config.
-    --
-    --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
+    --  Uncomment the following line and add your plugins
+    --  to `lua/custom/plugins/*.lua` to get going.
     { import = 'custom.plugins' },
     --
-    -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
-    -- Or use telescope!
+    -- For additional information with loading, sourcing and examples
+    -- see `:help lazy.nvim-🔌-plugin-spec` Or use telescope!
     -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
-    -- you can continue same window with `<space>sr` which resumes last telescope search
+    -- you can continue same window with `<space>sr`
+    -- which resumes last telescope search
   },
   ui = {
-    -- If you are using a Nerd Font: set icons to an empty table which will use the
-    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
+    -- If you are using a Nerd Font, set icons to an empty table.
+    -- This will use the default lazy.nvim-defined Nerd Font icons.
+    -- Otherwise, define a unicode icons table.
     icons = vim.g.have_nerd_font and {} or {
       cmd = '⌘',
       config = '🛠',
